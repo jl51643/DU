@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Details</title>
+</head>
+<body>
+<h1 th:text="*{userType == 'student'}? 'Student Details' : 'Teacher Details'"></h1>
+
+
+<div>
+    <strong>First Name:</strong>
+    <span th:text="${student.firstname}"></span>
+</div>
+
+<div>
+    <strong>Last Name:</strong>
+    <span th:text="${student.lastname}"></span>
+</div>
+
+<div>
+    <strong>Email:</strong>
+    <span th:text="${student.email}"></span>
+</div>
+</body>
+</html>
