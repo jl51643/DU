@@ -14,9 +14,10 @@
 
     <div id="createCard" class="card" style="width: 50%;">
         <form th:action="@{/classroom}" method="post">
+            <input type="hidden" class="form-control" id="delete" name="delete" th:value="false">
             <div class="form-group">
                 <label for="name">Classroom name:</label>
-                <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name" placeholder="Enter first name" required>
+                <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name" placeholder="Enter classroom name" required>
             </div>
             <br/>
 

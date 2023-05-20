@@ -30,5 +30,7 @@ public class TeacherService {
         return teacherRepository.findById(String.valueOf(teacherID));
     }
     public Teacher findByEmail (String teacherEmail){
-        return teacherRepository.findByEmail(teacherEmail);}
+        return teacherRepository.findByEmail(teacherEmail);
+    }
+
 }

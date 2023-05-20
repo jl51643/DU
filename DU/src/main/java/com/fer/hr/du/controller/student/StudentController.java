@@ -33,14 +33,15 @@ public class StudentController {
     @GetMapping("/{id}")
     public String getStudentById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("userType", "student");
-        model.addAttribute("student", studentService.findByID(id).get());
+        model.addAttribute("user", studentService.findByID(id).get());
         return "userView";
     }
 
     @GetMapping("/list")
         public String getStudents(Model model) {
         model.addAttribute("userType", "student");
-        model.addAttribute("userList", "student");model.addAttribute("userList", studentService.findAllStudents());
+        //model.addAttribute("userList", "student");
+        model.addAttribute("userList", studentService.findAllStudents());
         return "userList";
     }
 

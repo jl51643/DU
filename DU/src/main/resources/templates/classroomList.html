@@ -25,6 +25,7 @@
                 <th scope="col">Classroom ID</th>
                 <th scope="col">Classroom name</th>
                 <th scope="col">Classroom teacher email</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -32,6 +33,20 @@
                 <th scope="row" th:text="${classroom.id}"></th>
                 <td th:text="${classroom.name}"></td>
                 <td th:text="${classroom.teacher.email}"></td>
+                <td>
+                    <a th:href="@{'/classroom/' + ${classroom.id}}">
+                        <button type="button" class="btn btn-warning">Manage classroom</button>
+                    </a>
+                </td>
+
+                <td>
+                    <form th:action="@{'/classroom/' + ${classroom.id}}" method="post">
+                        <input type="hidden" class="form-control" id="delete" name="delete" th:value="true">
+                        <input type="hidden" class="form-control" id="name" name="name" th:value="${classroom.name}">
+                        <input type="hidden" class="form-control" id="teacherID" name="teacherID" th:value="${classroom.teacher.id}">
+                        <button type="submit" class="btn btn-danger">Delete classroom</button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>

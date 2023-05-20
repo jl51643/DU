@@ -1,9 +1,13 @@
 package com.fer.hr.du.model.classroom;
 
+import com.fer.hr.du.model.student.Student;
 import com.fer.hr.du.model.teacher.Teacher;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "classroom")
@@ -24,6 +28,9 @@ public class Classroom {
 
     @ManyToOne
     private Teacher teacher;
+
+    @OneToMany
+    private Set<Student> students = new HashSet<>();
 
     public Classroom() {
 
@@ -49,6 +56,13 @@ public class Classroom {
         return teacher;
     }
 
+    public void addStudent(Student student){
+        this.students.add(student);
+    }
+
+    public List<Student> getStudents(){
+        return this.students.stream().toList();
+    }
     public Classroom(String name, Optional<Teacher> byId) {
         this.name = name;
     }

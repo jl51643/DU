@@ -6,10 +6,7 @@ import com.fer.hr.du.service.student.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/teacher")
@@ -27,6 +24,13 @@ public class TeacherController {
         model.addAttribute("userType", "teacher");
         model.addAttribute("url", "/teacher");
         return "userForm";
+    }
+
+    @GetMapping("/{id}")
+    public String getStudentById(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("userType", "teacher");
+        model.addAttribute("user", teacherService.findById(id).get());
+        return "userView";
     }
 
     @GetMapping("/list")
