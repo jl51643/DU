@@ -37,7 +37,7 @@
                 <td th:text="${classroom.name}"></td>
                 <td th:text="${classroom.teacher.email}"></td>
                 <td>
-                    <a th:href="@{'/classroom/' + ${classroom.id}}">
+                    <a th:href="@{'/classroom/' + ${classroom.id} + '?search='}">
                         <button type="button" class="btn btn-warning">Manage classroom</button>
                     </a>
                 </td>
