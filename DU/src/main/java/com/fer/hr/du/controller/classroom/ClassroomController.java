@@ -39,16 +39,35 @@ public class ClassroomController {
     }
 
     @GetMapping("/{id}")
-    public String getClassroom(@PathVariable("id") Long id, Model model) {
+    public String getClassroom(@PathVariable("id") Long id, @RequestParam String search, Model model) {
         model.addAttribute("classroom", classroomService.findById(id).get());
         model.addAttribute("teacherList", teacherService.findAllTeachers());
 
+        List<Student> notInClassroom = new ArrayList<>(studentService.findAllStudents());
+        List<Student> inSearch = new ArrayList<>();
+
 
         model.addAttribute("userType", "student");
-        List<Student> notInClassroom = new ArrayList<>(studentService.findAllStudents());
         notInClassroom.removeAll(classroomService.findStudents(id));
         model.addAttribute("userList", notInClassroom);
+
+        System.out.println("SEARCH" + search);
+
+        if (search != null){
+            if (!search.equals("")){
+                for (Student s : notInClassroom){
+                    if(s.getEmail().equals(search) || s.getFirstname().equals(search) || s.getLastname().equals(search)){
+                        inSearch.add(s);
+                    }
+                }
+                System.out.println(inSearch);
+                model.addAttribute("userList", inSearch);
+                model.addAttribute("search", search);
+            }
+        }
+
         model.addAttribute("classroomStudents", classroomService.findStudents(id));
+
         //model.addAttribute("success", "Success");
 
         return "classroomView";
