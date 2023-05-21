@@ -33,13 +33,13 @@ public class ClassroomController {
     }
 
     @GetMapping("")
-    public String getTeacherForm(Model model) {
+    public String getClassroomForm(Model model) {
         model.addAttribute("teacherList", teacherService.findAllTeachers());
         return "classroomForm";
     }
 
     @GetMapping("/{id}")
-    public String getStudentById(@PathVariable("id") Long id, Model model) {
+    public String getClassroom(@PathVariable("id") Long id, Model model) {
         model.addAttribute("classroom", classroomService.findById(id).get());
         model.addAttribute("teacherList", teacherService.findAllTeachers());
 
@@ -55,7 +55,7 @@ public class ClassroomController {
     }
 
     @GetMapping("/list")
-    public String getTeachers(Model model) {
+    public String getClassrooms(Model model) {
         System.out.println("ERROR" + classroomService.findAllClassrooms());
         model.addAttribute("classroomList", classroomService.findAllClassrooms());
         return "classroomList";

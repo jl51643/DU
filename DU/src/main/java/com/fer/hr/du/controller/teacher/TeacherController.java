@@ -27,7 +27,7 @@ public class TeacherController {
     }
 
     @GetMapping("/{id}")
-    public String getStudentById(@PathVariable("id") Long id, Model model) {
+    public String getTeacherById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("userType", "teacher");
         model.addAttribute("user", teacherService.findById(id).get());
         return "userView";
