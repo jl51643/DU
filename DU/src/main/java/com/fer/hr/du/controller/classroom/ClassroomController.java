@@ -11,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/classroom")
 public class ClassroomController {
@@ -42,8 +45,11 @@ public class ClassroomController {
 
 
         model.addAttribute("userType", "student");
-        model.addAttribute("userList", classroomService.findStudents(id));
-        model.addAttribute("success", "Success");
+        List<Student> notInClassroom = new ArrayList<>(studentService.findAllStudents());
+        notInClassroom.removeAll(classroomService.findStudents(id));
+        model.addAttribute("userList", notInClassroom);
+        model.addAttribute("classroomStudents", classroomService.findStudents(id));
+        //model.addAttribute("success", "Success");
 
         return "classroomView";
     }
@@ -82,17 +88,20 @@ public class ClassroomController {
         }
         classroomService.updateClassroom(id, name, teacherService.findById(teacherID).get());
 
+        model.addAttribute("userType", "student");
         model.addAttribute("classroom", classroomService.findById(id).get());
         model.addAttribute("teacherList", teacherService.findAllTeachers());
-        model.addAttribute("success", "Success");
+        List<Student> notInClassroom = new ArrayList<>(studentService.findAllStudents());
+        notInClassroom.removeAll(classroomService.findStudents(id));
+        model.addAttribute("userList", notInClassroom);
+        model.addAttribute("classroomStudents", classroomService.findStudents(id));
 
         return "classroomView";
     }
 
     @PostMapping("/{id}/add")
-    public String addStudent(@PathVariable("id") Long id/*, Long studentID*/, Model model){
+    public String addStudent(@PathVariable("id") Long id, @RequestParam Long studentID, Model model){
 
-        Long studentID = 1L;
 
         Student s = studentService.findByID(studentID).get();
 
@@ -101,7 +110,29 @@ public class ClassroomController {
         model.addAttribute("classroom", classroomService.findById(id).get());
         model.addAttribute("teacherList", teacherService.findAllTeachers());
         model.addAttribute("userType", "student");
-        model.addAttribute("userList", classroomService.findStudents(id));
+        List<Student> notInClassroom = new ArrayList<>(studentService.findAllStudents());
+        notInClassroom.removeAll(classroomService.findStudents(id));
+        model.addAttribute("userList", notInClassroom);
+        model.addAttribute("classroomStudents", classroomService.findStudents(id));
+        model.addAttribute("success", "Success");
+
+        return "classroomView";
+    }
+
+    @PostMapping("/{id}/removeStudent")
+    public String removeStudent(@PathVariable("id") Long id, @RequestParam Long studentID, Model model){
+
+        Student s = studentService.findByID(studentID).get();
+
+        classroomService.removeStudent(id, s);
+
+        model.addAttribute("classroom", classroomService.findById(id).get());
+        model.addAttribute("teacherList", teacherService.findAllTeachers());
+        model.addAttribute("userType", "student");
+        List<Student> notInClassroom = new ArrayList<>(studentService.findAllStudents());
+        notInClassroom.removeAll(classroomService.findStudents(id));
+        model.addAttribute("userList", notInClassroom);
+        model.addAttribute("classroomStudents", classroomService.findStudents(id));
         model.addAttribute("success", "Success");
 
         return "classroomView";

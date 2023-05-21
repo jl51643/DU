@@ -1,5 +1,6 @@
 package com.fer.hr.du.service.student;
 
+import com.fer.hr.du.model.student.Student;
 import com.fer.hr.du.model.teacher.Teacher;
 import com.fer.hr.du.repository.student.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,20 @@ public class TeacherService {
         return teacherRepository.findByEmail(teacherEmail);
     }
 
+
+    public Teacher updateTeacher(Long teacherID, String firstname, String lastname, String email){
+        Teacher t = teacherRepository.findById(String.valueOf(teacherID)).get();
+
+        t.setFirstname(firstname);
+        t.setLastname(lastname);
+        t.setEmail(email);
+
+        teacherRepository.save(t);
+
+        return t;
+    }
+
+    public void deleteTeacher(Long teacherID){
+        teacherRepository.delete(teacherRepository.findById(String.valueOf(teacherID)).get());
+    }
 }

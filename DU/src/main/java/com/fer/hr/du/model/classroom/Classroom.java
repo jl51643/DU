@@ -60,6 +60,10 @@ public class Classroom {
         this.students.add(student);
     }
 
+    public void removeStudent(Student student){
+        this.students.remove(student);
+    }
+
     public List<Student> getStudents(){
         return this.students.stream().toList();
     }

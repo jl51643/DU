@@ -57,6 +57,14 @@ public class ClassroomService {
         classroomRepository.save(c);
     }
 
+    public void removeStudent(Long classroomID, Student student){
+        Classroom c = classroomRepository.findById(String.valueOf(classroomID)).get();
+
+        c.removeStudent(student);
+
+        classroomRepository.save(c);
+    }
+
     public List<Student> findStudents(Long classroomID){
         Classroom c = classroomRepository.findById(String.valueOf(classroomID)).get();
 

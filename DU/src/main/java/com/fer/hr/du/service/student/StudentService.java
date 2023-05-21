@@ -1,6 +1,8 @@
 package com.fer.hr.du.service.student;
 
+import com.fer.hr.du.model.classroom.Classroom;
 import com.fer.hr.du.model.student.Student;
+import com.fer.hr.du.model.teacher.Teacher;
 import com.fer.hr.du.repository.student.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,23 @@ public class StudentService {
 
     public Optional<Student> findByID(Long studentID){
         return studentRepository.findById(String.valueOf(studentID));
+    }
+
+
+    public Student updateStudent(Long studentID, String firstname, String lastname, String email){
+        Student s = studentRepository.findById(String.valueOf(studentID)).get();
+
+        s.setFirstname(firstname);
+        s.setLastname(lastname);
+        s.setEmail(email);
+
+        studentRepository.save(s);
+
+        return s;
+    }
+
+    public void deleteStudent(Long studentID){
+        studentRepository.delete(studentRepository.findById(String.valueOf(studentID)).get());
     }
 
 }

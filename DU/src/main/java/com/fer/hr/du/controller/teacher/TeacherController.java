@@ -33,6 +33,22 @@ public class TeacherController {
         return "userView";
     }
 
+    @PostMapping("/{id}")
+    public String updateTeacherById(@PathVariable("id") Long id, @RequestParam String firstname, String lastname, String email, String delete,Model model) {
+
+        if (delete.equals("true")){
+            System.out.println("BRISEM");
+            teacherService.deleteTeacher(id);
+            model.addAttribute("userList", teacherService.findAllTeachers());
+            return "userList";
+        }
+
+        teacherService.updateTeacher(id, firstname, lastname, email);
+        model.addAttribute("userType", "teacher");
+        model.addAttribute("user", teacherService.findById(id).get());
+        return "userView";
+    }
+
     @GetMapping("/list")
     public String getTeachers(Model model) {
         model.addAttribute("userType", "teacher");
