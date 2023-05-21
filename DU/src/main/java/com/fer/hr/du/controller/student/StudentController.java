@@ -25,13 +25,41 @@ public class StudentController {
 
     @GetMapping("")
     public String getStudentForm(Model model) {
-        return "studentForm";
+        model.addAttribute("userType", "student");
+        model.addAttribute("url", "/student");
+        return "userForm";
+    }
+
+    @GetMapping("/{id}")
+    public String getStudentById(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("userType", "student");
+        model.addAttribute("user", studentService.findByID(id).get());
+        return "userView";
+    }
+
+    @PostMapping("/{id}")
+    public String updateStudentById(@PathVariable("id") Long id, @RequestParam String firstname, String lastname, String email, String delete,Model model) {
+
+        if (delete.equals("true")){
+            System.out.println("BRISEM");
+            studentService.deleteStudent(id);
+            model.addAttribute("userList", studentService.findAllStudents());
+            return "userList";
+        }
+
+        studentService.updateStudent(id, firstname, lastname, email);
+        model.addAttribute("userType", "student");
+        model.addAttribute("user", studentService.findByID(id).get());
+        return "userView";
+
     }
 
     @GetMapping("/list")
-        public String getStudentS(Model model) {
-        model.addAttribute("studentList", studentService.findAllStudents());
-        return "students";
+        public String getStudents(Model model) {
+        model.addAttribute("userType", "student");
+        //model.addAttribute("userList", "student");
+        model.addAttribute("userList", studentService.findAllStudents());
+        return "userList";
     }
 
     @PostMapping("")
@@ -39,7 +67,9 @@ public class StudentController {
         Student newStudent = new Student(firstname, lastname, email);
         Student newStudent2 = studentService.createStudent(newStudent);
         //return ResponseEntity.status(HttpStatus.CREATED).body(student);
+        model.addAttribute("userType", "student");
+        model.addAttribute("url", "/student");
         model.addAttribute("success", "Success");
-        return "studentForm";
+        return "userForm";
     }
 }

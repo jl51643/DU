@@ -1,0 +1,50 @@
+h1 {
+    font-family: Lato;
+    text-transform: uppercase;
+    margin: 25px 0px 0px 25px;
+}
+
+h3 {
+    margin: 25px 0px 0px 25px;
+}
+
+#createCard{
+    margin: 25px 0px 0px 25px;
+}
+
+#createCard>form{
+    margin: 25px 25px 25px 25px;
+}
+
+#createCard>div{
+    margin: 0px 0px 5px 25px;
+}
+
+#createNewButton{
+    margin: 0px 0px 5px 25px;
+}
+
+.classroomCard{
+    margin: 25px 0px 0px 25px;
+}
+
+.classroomCard>form{
+    width: 75%;
+}
+
+.userCard{
+    margin: 25px 0px 0px 25px;
+}
+
+#studentRemoveForm{
+    display: inline;
+}
+
+.studentFlex{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 10px;
+}
+.studentInClassroom{
+    padding: 10px 5px 13px 15px;
+}

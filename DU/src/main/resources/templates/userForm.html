@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Student</title>
+    <link th:href="@{/css/du.css}" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+    <nav th:replace="fragments/navBar.html :: navbar"></nav>
+
+    <h1 th:text="*{userType == 'student'}? 'Create student' : 'Create teacher'"></h1>
+
+<div id="createCard" class="card" style="width: 50%;">
+    <form th:action="${url}" method="post">
+
+        <div class="form-group">
+            <label for="firstname">First Name:</label>
+            <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp" name="firstname" placeholder="Enter first name" required>
+        </div>
+        <br/>
+
+        <div class="form-group">
+            <label for="lastname">Last Name:</label>
+            <input type="text" class="form-control" id="lastname" aria-describedby="emailHelp" name="lastname" placeholder="Enter last name" required>
+        </div>
+        <br/>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Enter email" required>
+            <small id="emailHelp3" class="form-text text-muted">Email should be unique.</small>
+        </div>
+        <br/>
+
+
+        <button type="submit" value="Create" class="btn btn-primary">Create</button>
+    </form>
+
+    <div th:text="*{success == 'Success'}? 'Successfully created!' : ''"></div>
+
+</div>
+
+</body>
+</html>
