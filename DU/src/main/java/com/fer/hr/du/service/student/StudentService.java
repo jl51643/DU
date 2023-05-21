@@ -20,8 +20,32 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
+    public String createStudent(String firstname, String lastname, String email) {
+
+        try {
+            if(firstname.length() > 30){
+                return "Firstname too long";
+            }
+            if(lastname.length() > 30){
+                return "Lastname too long";
+            }
+            if(email.length() > 30){
+                return "Email too long";
+            }
+            if (!findByEmail(email).isEmpty()){
+                return "Email taken";
+            }
+            if(findByEmail(email).isEmpty()){
+                Student newStudent = new Student(firstname, lastname, email);
+                studentRepository.save(newStudent);
+                return "Student successfully created!";
+            }
+        }catch (Exception e){
+            System.out.println(e);
+            return "Some kind of error occured";
+        }
+
+        return "Some kind of error occured";
     }
 
     public List<Student> findAllStudents(){
@@ -32,21 +56,48 @@ public class StudentService {
         return studentRepository.findById(String.valueOf(studentID));
     }
 
-
-    public Student updateStudent(Long studentID, String firstname, String lastname, String email){
-        Student s = studentRepository.findById(String.valueOf(studentID)).get();
-
-        s.setFirstname(firstname);
-        s.setLastname(lastname);
-        s.setEmail(email);
-
-        studentRepository.save(s);
-
-        return s;
+    public Optional<Student> findByEmail(String email){
+        return studentRepository.findByEmail(email);
     }
 
-    public void deleteStudent(Long studentID){
-        studentRepository.delete(studentRepository.findById(String.valueOf(studentID)).get());
+    public String updateStudent(Long studentID, String firstname, String lastname, String email){
+
+        if (studentRepository.findById(String.valueOf(studentID)).isEmpty()){
+            return "There is no student with that ID";
+        }
+
+        Student s = studentRepository.findById(String.valueOf(studentID)).get();
+
+        if(firstname.length() > 30){
+            return "Firstname too long";
+        }
+        if(lastname.length() > 30){
+            return "Lastname too long";
+        }
+        if(lastname.length() > 30){
+            return "Email too long";
+        }
+        if(findByEmail(email).isEmpty() || findByEmail(email).get().getId() == studentID){
+
+            s.setFirstname(firstname);
+            s.setLastname(lastname);
+            s.setEmail(email);
+
+            studentRepository.save(s);
+            return "Student successfully updated";
+        }
+
+        return "Email taken";
+    }
+
+    public String deleteStudent(Long studentID){
+        try {
+            studentRepository.delete(studentRepository.findById(String.valueOf(studentID)).get());
+        }catch (Exception e){
+            return "Couldn't delete student, remove him from classrooms first";
+        }
+
+        return "Student successfully deleted";
     }
 
 }

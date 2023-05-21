@@ -29,8 +29,8 @@ public class Classroom {
     @ManyToOne
     private Teacher teacher;
 
-    @OneToMany
-    private Set<Student> students = new HashSet<>();
+    @ManyToMany
+    private Set<Student> students;
 
     public Classroom() {
 

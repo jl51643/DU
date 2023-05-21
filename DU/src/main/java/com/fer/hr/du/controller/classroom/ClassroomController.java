@@ -63,12 +63,12 @@ public class ClassroomController {
 
     @PostMapping("")
     public String createClassroom(@RequestParam String name, Long teacherID, Model model) {
-        System.out.println("TEACHERI" + teacherService.findAllTeachers());
-        System.out.println("Tea" + teacherService.findById(teacherID));
-        Classroom classroom1 = new Classroom(name, teacherService.findById(teacherID).get());
-        Classroom classroom2 = classroomService.createClassroom(classroom1);
+        //System.out.println("TEACHERI" + teacherService.findAllTeachers());
+        //System.out.println("Tea" + teacherService.findById(teacherID));
+        //Classroom classroom1 = new Classroom(name, teacherService.findById(teacherID).get());
+        String response = classroomService.createClassroom(name, teacherService.findById(teacherID).get());
         model.addAttribute("teacherList", teacherService.findAllTeachers());
-        model.addAttribute("success", "Success");
+        model.addAttribute("success", response);
 
         return "classroomForm";
     }
@@ -82,11 +82,12 @@ public class ClassroomController {
 
         if (delete.equals("true")){
             System.out.println("BRISEM");
-            classroomService.deleteClassroom(id);
+            String response = classroomService.deleteClassroom(id);
             model.addAttribute("classroomList", classroomService.findAllClassrooms());
+            model.addAttribute("success", response);
             return "classroomList";
         }
-        classroomService.updateClassroom(id, name, teacherService.findById(teacherID).get());
+        String response = classroomService.updateClassroom(id, name, teacherService.findById(teacherID).get());
 
         model.addAttribute("userType", "student");
         model.addAttribute("classroom", classroomService.findById(id).get());
@@ -95,6 +96,7 @@ public class ClassroomController {
         notInClassroom.removeAll(classroomService.findStudents(id));
         model.addAttribute("userList", notInClassroom);
         model.addAttribute("classroomStudents", classroomService.findStudents(id));
+        model.addAttribute("success", response);
 
         return "classroomView";
     }
