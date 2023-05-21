@@ -16,14 +16,36 @@ import java.util.Optional;
 public class ClassroomService {
 
     private final ClassroomRepository classroomRepository;
+    private final TeacherRepository teacherRepository;
 
     @Autowired
-    public ClassroomService(ClassroomRepository classroomRepository){
+    public ClassroomService(ClassroomRepository classroomRepository, TeacherRepository teacherRepository){
         this.classroomRepository = classroomRepository;
+        this.teacherRepository = teacherRepository;
     }
 
-    public Classroom createClassroom(Classroom classroom){
-        return classroomRepository.save(classroom);
+    public String createClassroom(String classroomName, Teacher teacher){
+
+        try {
+            if (classroomName.length() > 30){
+                return "Classroom name is too long";
+            }
+            if (teacherRepository.findById(String.valueOf(teacher.getId())).isEmpty()){
+                return "That teacher doesn't exist";
+            }
+            if(!classroomRepository.findByName(classroomName).isEmpty()){
+                return "Classroom with that name already exists";
+            }
+            if(classroomRepository.findByTeacher(teacher).size() > 3){
+                return "Teacher is overworked, select some other teacher";
+            }
+            Classroom classroom = new Classroom(classroomName, teacherRepository.findById(String.valueOf(teacher.getId())).get());
+            classroomRepository.save(classroom);
+            return "Classroom created";
+        }catch (Exception e){
+            System.out.println(e);
+            return "Some kind of error occured";
+        }
     }
 
     public List<Classroom> findAllClassrooms(){
@@ -34,19 +56,46 @@ public class ClassroomService {
         return classroomRepository.findById(String.valueOf(classroomID));
     }
 
-    public Classroom updateClassroom(Long classroomID, String classroomName, Teacher teacher){
+    public String updateClassroom(Long classroomID, String classroomName, Teacher teacher){
+
+        if(classroomRepository.findById(String.valueOf(classroomID)).isEmpty()){
+            return "There is no such classroom";
+        }
+
         Classroom c = classroomRepository.findById(String.valueOf(classroomID)).get();
 
-        c.setName(classroomName);
-        c.setTeacher(teacher);
+        try {
+            if (classroomName.length() > 30){
+                return "Classroom name is too long";
+            }
+            if (teacherRepository.findById(String.valueOf(teacher.getId())).isEmpty()){
+                return "That teacher doesn't exist";
+            }
+            if(!classroomRepository.findByName(classroomName).isEmpty() && classroomRepository.findByName(classroomName).get().getId() != classroomID){
+                return "Classroom with that name already exists";
+            }
+            if(classroomRepository.findByTeacher(teacher).size() > 3){
+                return "Teacher is overworked, select some other teacher";
+            }
+            c.setName(classroomName);
+            c.setTeacher(teacherRepository.findById(String.valueOf(teacher.getId())).get());
 
-        classroomRepository.save(c);
-
-        return c;
+            classroomRepository.save(c);
+            return "Classroom updated";
+        }catch (Exception e){
+            System.out.println(e);
+            return "Some kind of error occured";
+        }
     }
 
-    public void deleteClassroom(Long classroomID){
-        classroomRepository.delete(classroomRepository.findById(String.valueOf(classroomID)).get());
+    public String deleteClassroom(Long classroomID){
+        try {
+            classroomRepository.delete(classroomRepository.findById(String.valueOf(classroomID)).get());
+            return "Classroom successfully deleted";
+        }catch (Exception e){
+            System.out.println(e);
+            return "Error occured while deleting classroom";
+        }
     }
 
     public void addStudent(Long classroomID, Student student){

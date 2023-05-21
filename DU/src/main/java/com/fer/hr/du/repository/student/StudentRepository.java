@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, String> {
@@ -15,4 +16,5 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     List<Student> findAll();
 
 
+    Optional<Student> findByEmail(String email);
 }

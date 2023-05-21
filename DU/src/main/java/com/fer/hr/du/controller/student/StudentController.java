@@ -42,14 +42,18 @@ public class StudentController {
 
         if (delete.equals("true")){
             System.out.println("BRISEM");
-            studentService.deleteStudent(id);
+            String response = studentService.deleteStudent(id);
             model.addAttribute("userList", studentService.findAllStudents());
+            model.addAttribute("userType", "student");
+            model.addAttribute("success", response);
             return "userList";
         }
 
-        studentService.updateStudent(id, firstname, lastname, email);
+        String response = studentService.updateStudent(id, firstname, lastname, email);
         model.addAttribute("userType", "student");
         model.addAttribute("user", studentService.findByID(id).get());
+        model.addAttribute("success", response);
+
         return "userView";
 
     }
@@ -64,12 +68,12 @@ public class StudentController {
 
     @PostMapping("")
     public String createStudent(@RequestParam String firstname, String lastname, String email, Model model) {
-        Student newStudent = new Student(firstname, lastname, email);
-        Student newStudent2 = studentService.createStudent(newStudent);
+
+        String response = studentService.createStudent(firstname, lastname, email);
         //return ResponseEntity.status(HttpStatus.CREATED).body(student);
         model.addAttribute("userType", "student");
         model.addAttribute("url", "/student");
-        model.addAttribute("success", "Success");
+        model.addAttribute("success", response);
         return "userForm";
     }
 }
