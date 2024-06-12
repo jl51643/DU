@@ -2,10 +2,13 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.7'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.7.10'
+    id 'org.jetbrains.kotlin.plugin.jpa' version '1.7.10'
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
@@ -19,7 +22,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.h2database:h2:1.3.148'
+    runtimeOnly 'com.h2database:h2:2.1.214'
+    runtimeOnly 'org.postgresql:postgresql'
+
     //implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
@@ -33,15 +38,50 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-core'
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.springframework.security:spring-security-test'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'com.konghq:unirest-java:3.11.09'
     implementation 'com.konghq:unirest-java:3.11.09:standalone'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+    //implementation 'org.hibernate:hibernate-core:5.6.0.Final'
+    //implementation 'org.hibernate.orm:hibernate-core:6.5.2.Final'
 
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjsr305=strict']
+        jvmTarget = '17'
+    }
+}
+noArg {
+    annotation("javax.persistence.Entity")
+    invokeInitializers = true
+}
+
+
